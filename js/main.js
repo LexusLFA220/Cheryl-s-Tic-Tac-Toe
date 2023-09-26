@@ -3,7 +3,9 @@
 /*----- app's state (variables) -----*/
 let board;
 let turn = 'X';
-
+let win;
+win = board[0] && board[0] === board[1] && board[0] === board[2] ? board[0] : null;
+<condition1 && condition2 && condition3 > ? <if all 3 conditions are true, this> : <else, this></else>
 /*----- cached element references -----*/
 const squares = Array.from(document.querySelectorAll('#board div'));
 const messages = document.querySelector('h2');
