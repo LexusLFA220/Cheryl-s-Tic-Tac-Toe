@@ -12,38 +12,46 @@ function App() {
   /*----- app's state (variables) -----*/
   const [board, setBoard] = React.useState(["","","","","","","","",""])
   let gameOver = false
-  let turn = 'X'
-  let win
+  const[turn, setTurn] = React.useState ('X')
+  const  [win, setWin] = React.useState(null)
+
+  function getWinner (){
+    let winner = null;
+    winningCombos.forEach(function (combo,index){
+      if(
+        board[combo[0]] &&
+        board[combo[0]] === board[combo[1]] &&
+        board[combo[0]] === board[combo[2]]
+      )
+      winner = board[combo[0]]
+    })
+    return winner ? winner : board.includes('') ? null  : 'T'
+  }
+
   function handleTurn(event) {
-    function handleTurn(event) {
-      let idx = squares.findIndex(function(square) {
-          return square === event.target;
-      });
-     let idx = event.target.id
-     if (gameOver == false) {
+    console.log(event.target, event.target.id)
+    let idx = event.target.id
+    if (gameOver == false) {
       let newBoard = [...board]
       newBoard[idx] = turn
       setBoard(newBoard)
-       turn = turn === 'X' ? 'O' : 'X'
-       // win = getWinner()
-       // render() 
-     }
-   }
-    let idx = squares.findIndex(function(square) {
-        return square === event.target;
-    });
-   let idx = event.target.id
-   if (gameOver == false) {
-     board[idx] = turn
-     turn = turn === 'X' ? 'O' : 'X'
-     // win = getWinner()
-     // render() 
-   }
+      let nextTurn = turn === 'X' ? 'O' : 'X'
+      setTurn=(nextTurn)
+      let Victor = getWinner()
+      setWin(Victor)
+    }
+  
+ }
+ function Results(){
+
+  let message = win === 'T' ? `That's a tie, queen!` : win ? `${win} wins the game!` : `It's ${turn}'s turn!`;
+
+  return <h2>{message}</h2>
  }
   return (
     <div>
     <h1>Tic-React-Toe</h1>
-    <h2>It's X's turn!</h2>
+    <Results/>
     <div class="flex-container flex-column">
       <div class="flex-container flex-wrap" id="board" onClick={handleTurn}>
         {board.map((value, idx) => {
